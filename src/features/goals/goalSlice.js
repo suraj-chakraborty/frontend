@@ -60,6 +60,24 @@ export const deleteGoal = createAsyncThunk(
   }
 );
 
+export const updateGoal = createAsyncThunk(
+  "goals/update",
+  async (id, goalData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.Token;
+      return await goalService.updateGoal(id, goalData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const goalSlice = createSlice({
   name: "goal",
   initialState,
